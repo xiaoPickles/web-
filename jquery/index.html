@@ -5,24 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <style>
-    div{
-      width: 100px;
-      height: 100px;
-      background-color: pink;
-    }
-  </style>
   <script src="./jquery.js"></script>
   <script>
-    window.onload = function(){
-      var div = document.querySelector('div')
-      div.style.display='none'
-      //原生JavaScript隐藏盒子
-      // $('div').style.display= 'none' 错误
-    }
+    $(function(){
+      //利用隐式迭代思想，无需遍历
+     $('button').click(function(){
+       //获取当前按钮并设置背景颜色
+       $(this).css('backgroundColor','pink')
+       //去除其他按钮背景颜色
+       $(this).siblings('button').css('backgroundColor','')
+     })
+    })
   </script>
 </head>
 <body>
-  <div></div>
+  <button>1</button>
+  <button>2</button>
+  <button>3</button>
+  <button>4</button>
 </body>
 </html>
