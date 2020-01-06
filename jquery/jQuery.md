@@ -267,7 +267,7 @@ $('.nav')
 //与css选择器一致
 ```
 
-### 3.2  隐式迭代
+#### 3.11 隐式迭代
 
 >  遍历内部DOM元素（伪数组形式存储）的过程就叫做隐式迭代。
 >
@@ -293,7 +293,7 @@ $(function(){
 
 `jQuery`对匹配到的所有`div`元素进行循环遍历，添加背景样式，应此行为不是人为，所以称为隐式迭代。
 
-### 筛选选择器
+#### 3.12 筛选选择器
 
 | 语法       | 用法                | 描述                                           |
 | ---------- | ------------------- | ---------------------------------------------- |
@@ -339,7 +339,7 @@ $(function(){
 </html>
 ```
 
-### 3.3  jQuery的筛选方法
+#### 3.13  jQuery的筛选方法
 
 | 语法               | 用法                              | 说明                                     |
 | ------------------ | --------------------------------- | ---------------------------------------- |
@@ -381,7 +381,7 @@ $(function(){
 </html>
 ```
 
-### 3.4 下拉菜单
+#### 3.14 下拉菜单
 
 **案例：英雄联盟官网常用的更新与赛事下拉菜单：**
 
@@ -463,7 +463,7 @@ $(function(){
 </html>
 ```
 
-### 3.5 其他筛选方法
+#### 3.14 其他筛选方法
 
 | 语法                | 用法                               | 说明                                             |
 | ------------------- | ---------------------------------- | ------------------------------------------------ |
@@ -504,7 +504,7 @@ $(function(){
 ...
 ```
 
-### 3.6 jQuery排他思想
+#### 3.15 jQuery排他思想
 
 案例：在页面写入四个按钮，当点击某个按钮时，该按钮变色，其他的按钮恢复原来的颜色。
 
@@ -532,11 +532,549 @@ $(function(){
 ...
 ```
 
-### 3.7 淘宝服饰精品案例
+#### 3.16 淘宝服饰精品案例
 
 ```js
 
 ```
+
+### 3.2 样式操作
+
+#### 3.21 修改样式方法
+
+> `jQuery`可以使用css方法修改简单元素样式；也可以操作类，修改多个样式。
+
+1. 参数只写属性名，则返回属性值。
+
+   语法格式 ：`$("elemnet").css("属性名")`
+
+   ```js
+   $(function(){
+       //获取按钮的宽度
+       var width = $('button').css('width')
+       console.log(width) // 60px
+   })
+   ```
+
+2. 参数 是属性名，属性值，并以逗号分隔，则是设置一组样式。
+
+   语法格式：`$('elemnet').css('属性名','属性值')`;**值如果是数字，可以不加单位和引号。**
+
+   ```js
+   $(function(){
+       //按钮的宽度设置为200px
+       $('button').css('width',200)
+       console.log($('button').css('width'))
+       // 200px
+   })
+   ```
+
+3. 参数可以是对象的形式，设置多组样式，属性名和属性值用冒号隔开，样式之间以逗号隔开(**属性名可以不加引号**)。
+
+   ```js
+   $(function(){
+       //获取按钮的宽度
+       $('button').css({width:'300px',backgroundColor:'red'})
+       // 复合属性backgroundColor使用驼峰命名法
+   })
+   ```
+
+#### 3.22 修改样式操作类
+
+作用等同以前的`classList`，可以操作类样式，注意操作类里面的参数不要加点。
+
+1. 添加类
+
+   ```js
+   //语法
+   $('element').addClass('类名')
+   ```
+
+   ```html
+   <!--点击按钮给div换色-->
+   ...
+   <style>
+       div{
+         width: 100px;height: 100px;
+         background-color: blue;
+       }
+       .change{
+         width: 100px;
+         height: 100px;
+         background-color: pink;
+       }
+     </style>
+     <script src="./jquery.js"></script>
+     <script>
+       $(function(){
+         $('button').click(function(){
+           $('div').addClass('change')
+         })
+       })
+     </script>
+   </head>
+   <body>
+     <div></div>
+     <button>变色</button>
+   </body>
+   ...
+   ```
+
+   
+
+2. 移除类名
+
+   ```html
+   <!--给div添加change类名，点击按钮移除类名-->
+   ...
+   <!--css样式与上面一致-->
+   <script src="./jquery.js"></script>
+   <script>
+       $(function(){
+           $('button').click(function(){
+               $('div').removeClass('change')
+           })
+       })
+   </script>
+   </head>
+   <body>
+       <div class="change"></div>
+       <button>变色</button>
+   </body>
+   ...
+   ```
+
+3. 切换类
+
+   ```js
+   //语法
+   $('elemnet').toggleClass('类名')
+   //无类名则添加，有则取消类名
+   ```
+
+   ```html
+   ...
+   <style>
+       div{
+           width: 100px;height: 100px;
+           background-color: blue;
+           transition: all 0.5s;
+           /* 过渡 */
+       }
+       .change{
+           width: 100px;
+           height: 100px;
+           background-color: pink;
+           transform: rotate(360deg);
+           /* 旋转 360° */
+       }
+   </style>
+   <script src="./jquery.js"></script>
+   <script>
+       $(function(){
+           $('button').click(function(){
+               $('div').toggleClass('change')
+           })
+       })
+   </script>
+   </head>
+   <body>
+       <div></div>
+       <button>变色</button>
+   </body>
+   ...
+   ```
+
+   
+
+#### 3.23 Tab栏切换
+
+```html
+...
+<style>
+    *{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    section{
+      width: 40%;
+      margin: auto;
+    }
+    ul{
+      display: flex;
+      background-color: purple;
+      justify-content: center;
+    }
+    ul li{
+     padding: 10px 15px 10px 15px;
+     font-size: large;
+    }
+    .content{
+      background-color: rgb(149, 132, 245);
+      text-align: center;
+    }
+    .content div{
+      padding-top: 50px;
+      padding-bottom: 50px;
+    }
+    .hide{
+      display: none;
+    }
+    .listyle{
+      background-color: sienna;
+    }
+  </style>
+  <script src="./jquery.js"></script>
+  <script>
+    $(function(){
+      $('ul li').mouseover(function(){
+        //当前li添加类，其兄弟移除类
+        $(this).addClass('listyle')
+        $(this).siblings().removeClass('listyle')
+        var index = $(this).index()
+        $('.content div').eq(index).show()
+        $('.content div').eq(index).siblings().hide()
+      })
+    })
+  </script>
+</head>
+<body>
+  <section>
+    <ul>
+      <li>规格与包装</li>
+      <li>售后与保障</li>
+      <li>商品评价</li>
+      <li>搞基社区</li>
+  </ul>
+  <div class="content">
+    <div>规格与包装</div>
+    <div class="hide">售后与保障</div>
+    <div class="hide">商品评价</div>
+    <div class="hide">搞基社区</div>
+  </div>
+  </section>
+</body>
+...
+```
+
+
+
+#### 3.24 类操作与`className`的区别
+
+### 3.3 jQuery效果
+
+> jQuery给我们封装很多效果，最为常见的如下
+>
+> * 显示隐藏
+> * 滑动
+> * 淡入淡出
+> * 自定义动画
+
+#### 3.31显示隐藏效果
+
+语法：
+
+```js
+//显示
+show('speed',callback())
+//隐藏
+hide('speed',callback())
+//切换
+toggle('speed',callback())
+```
+
+* **speed**:三种预定速度之一的字符串("slow","normal", or "fast")或表示动画时长的毫秒数值(如：1000)
+
+* **callback**:在动画完成时执行的函数，每个元素执行一次。
+
+```html
+<!--用显示、隐藏、切换三个按钮改变div的状态-->
+<script src="./jquery.js"></script>
+<script>
+    $(function(){
+        $('button').eq(1).click(function(){
+            //隐藏
+            $('div').hide('slow',function(){
+                //改变div颜色
+                $(this).css('backgroundColor','red')
+            })
+        })
+        //显示
+        $('button').eq(0).click(function(){
+            $('div').show(1000)
+        })
+        //切换
+        $('button').eq(2).click(function(){
+            $('div').toggle('normal')
+        })
+    })
+</script>
+</head>
+<body>
+  <button>显示</button>
+  <button>隐藏</button>
+  <button>切换</button>
+  <div style="width:100px;height: 100px;
+  background-color: slateblue;">
+  </div>
+</body>
+```
+
+#### 3.32 滑动效果与事件切换
+
+语法规范：
+
+```js
+slideDown([speed],[easing],[fn])//下拉
+slideUp([speed],[easing],[fn])//上滑
+slideToggle([speed],[easing],[fn])//滑动切换
+```
+
+```html
+<!--用上滑、下拉、切换三个按钮改变div的状态-->
+<style>
+    div{
+      width: 100px;
+      height: 100px;
+      background-color:red;
+      display: none;
+    }
+  </style>
+  <script src="./jquery.js"></script>
+  <script>
+    $(function(){
+      //下拉
+      $('button').eq(0).click(function(){
+        $('div').slideDown('slow','linear')
+      })
+      //上滑
+      $('button').eq(1).click(function(){
+      $('div').slideUp(function(){
+        $(this).css('backgroundColor','purple')
+      })
+    })
+    //滑动切换
+     $('button').eq(2).click(function(){
+        $('div').slideToggle()
+      })
+    })
+  </script>
+</head>
+<body>
+  <button>下拉</button>
+  <button>上滑</button>
+  <button>滑动切换</button>
+  <div>
+  </div>
+</body>
+```
+
+事件切换：
+
+```js
+//语法规范
+hover([over],out)
+```
+
+| 参数 | 作用                             |
+| ---- | -------------------------------- |
+| over | 鼠标移到元素上要触发的函数(可选) |
+| out  | 鼠标移出元素上要触发的函数       |
+
+**如果只有参数`out`**,则其表示鼠标移到元素上或移出元素时触发执行的事件函数。
+
+```html
+// 当鼠标移入或移出span时，显示或隐藏其描述区块，使用事件切换方法
+...
+   <style>
+    section{
+      background-color: rgb(255,255,255);
+      width: 300px;
+    }
+    span{
+      background-color: rgb(151, 136, 233);
+    }
+    div{
+      background-color: rgb(231, 139, 231);
+      display: none;
+    }
+  </style>
+  <script src="./jquery.js"></script>
+  <script>
+    $(function(){
+      $('span').hover(function(){
+        $('div').slideToggle()
+        //移出或者移入时都会调用函数slideToggle()
+      })
+    })
+  </script>
+</head>
+<body>
+ <section>
+  <span>卖炭翁</span>
+  <div>
+伐薪烧炭南山中，满面尘灰烟火色，
+两鬓苍苍十指黑。卖炭得钱何所营？
+身上衣裳口中食。可怜身上衣正单，
+心忧炭贱愿天寒。
+  </div>
+ </section>
+</body>
+...
+```
+
+#### 3.33 动画队列及停止方法
+
+1. 动画队列
+
+   动画或效果一旦触发就会执行，如果多次触发，就会造成多个动画或效果排列。
+
+2. 停止队列
+
+   ```js
+   stop()
+   ```
+
+   * stop用于停止动画或效果
+   * stop()写到动画或效果的前面。相当于结束上一次动画。
+
+   ```js
+   //改进3.32 的案例
+   $(function(){
+       $('span').hover(function(){
+           $('div').stop().slideToggle()
+       })
+   })
+   ```
+
+
+
+#### 3.34 淡入淡出效果
+
+语法规范：
+
+```js
+fadeIn([speed],[easing],[fn])//淡入
+fadeOut([speed],[easing],[fn])//淡出
+fadeToggle([speed],[easing],[fn])//淡入淡出切换
+fadeTo(speed,opacity,[easing],[fn])//改变透明度
+```
+
+```html
+... 
+<script>
+    $(function(){
+      $('button').eq(0).click(function(){
+        $('div').fadeIn('slow')//淡入
+      })
+      $('button').eq(1).click(function(){
+        $('div').fadeOut('1000')//淡出
+      })
+      $('button').eq(2).click(function(){
+        $('div').stop().fadeToggle()//切换
+      })
+      $('button').eq(3).click(function(){
+        $('div').fadeTo(100,0.9)
+          //fadeTo方法必须要有参数speed和opacity
+      })
+    })
+  </script>
+</head>
+<body>
+ <section>
+   <button>淡入</button>
+   <button>淡出</button>
+   <button>切换</button>
+   <button>透明度</button>
+   <div></div>
+ </section>
+</body>
+...
+```
+
+```html
+<!--案例
+设置一组图片，鼠标移入当前图片时，其他图片透明度降低-->
+...
+ <style>
+    section{
+      background-color: rgb(82, 80, 80);
+      width: 320px;
+    }
+    img{
+      width: 100px;
+      border: solid #fff 1px;
+    }
+  </style>
+  <script src="./jquery.js"></script>
+  <script>
+    $(function(){
+      console.log($('section img'))
+     $('section img').hover(function(){
+       //移入
+       $(this).siblings().stop().fadeTo(100,0.1)
+          // 设置div的兄弟元素透明度
+       $(this).parent().siblings().stop().fadeTo(100,0.1)
+     },function(){
+       //移出
+       $(this).siblings().stop().fadeTo(100,1)
+       $(this).parent().siblings().stop().fadeTo(100,1)
+     })
+    })
+  </script>
+</head>
+<body>
+ <section>
+   <div>
+     <img src="./img/add.png">
+     <img src="./img/del.png">
+     <img src="./img/people.png">
+   </div>
+   <div>
+     <img src="./img/project.png">
+     <img src="./img/return.png">
+     <img src="./img/right.png">
+   </div>
+ </section>
+</body>
+...
+```
+
+#### 3.35 自定义动画
+
+1. 语法
+
+   ```js
+   animate(params,[speed],[easing],[fn])
+   ```
+
+   
+
+2. 参数
+
+   * **params**:一组包含作为动画属性和终值的样式属性和及其值的集合,以对象形式传递，属性名可以不带引号，如是复合属性，则采用驼峰命名法。
+
+   * **speed**:三种预定速度之一的字符串("slow","normal", or "fast")或表示动画时长的毫秒数值(如：1000)
+
+   * **easing**:指定切换效果，要使用的擦除效果的名称(需要插件支持).默认jQuery提供"linear" 和 "swing".
+
+   * **fn**:在动画完成时执行的函数，每个元素执行一次。
+
+```js
+//点击按钮使用animate方法给div设置动画
+$(function(){
+    $('button').click(function(){
+        $('div').animate({
+            top:100,
+            left:200,
+            opacity:0.2
+        },300)
+    })
+})
+```
+
+#### 3.36手风琴效果
 
 
 
