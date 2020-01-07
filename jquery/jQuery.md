@@ -1076,5 +1076,380 @@ $(function(){
 
 #### 3.36手风琴效果
 
+### 3.4 jQuery 属性操作
+
+#### 3.4.1 设置或获取元素固有属性
+
+> 所谓元素固有属性就是元素本身自带的属性，比如`<a>`标签里面的`href`.
+
+1. 获取属性值语法
+
+   ```js
+   element.prop('属性名')
+   ```
+
+   ```html
+   ....
+   <!--
+   获取a链接的href属性
+   -->
+   <script>
+       $(function(){
+          var value = $('a').prop('href')
+          console.log(value) //http://hemin.cn/jq/
+       })
+     </script>
+   </head>
+   <body>
+     <a href="http://hemin.cn/jq/">jquery在线手册</a>
+   </body>
+   ....
+   ```
+
+   
+
+2. 设置或修改属性
+
+   语法：```element.prop('属性名','属性值')```
+
+   ```js
+   //给链接a添加属性title
+   $('a').prop('title','add a title')
+   //也可以修改属性href
+   $('a').props('href','####')
+   ```
+
+   
+
+#### 3.4.2 设置或获取元素自定义属性
+
+获取属性语法：```element.attr('属性名')```
+
+设置属性语法：`element.attr('属性名','属性值')`
+
+```js
+//给链接a 添加index属性
+ $('a').attr('index',1)
+ console.log($('a').attr('index'))//1
+```
+
+#### 3.4.3 数据缓存 data()
+
+`data()`方法可以在指定元素上存储数据，并不会修改`DOM`元素结构，一旦页面刷新，之前存放的数据都将被移除。
+
+```js
+//给链接a设置username属性
+$(function(){
+    //使用data()方法数据存放在元素的内存里面，不会在DOM结构内显示
+    $('a').data('username','jojo')
+    console.log($('a').data('username'))
+})
+```
+
+#### 3.4.4  `h5`自定义属性
+
+> `h5`新增以`data-`为前缀的自定义属性，我们对比data()与attr()方法，探究二者差异之处
+
+```html
+...
+<script>
+    $(function(){
+     console.log($('p').attr('data-title'))//datatitle
+     console.log($('p').data('data-title'))//undefined
+    // 使用data()方法时，属性名不需要加前缀data-
+     console.log($('p').data('title'))//datatitle
+
+    })
+  </script>
+</head>
+<body>
+  <p data-title = 'datatitle'></p>
+</body>
+...
+```
+
+#### 3.4.5 全选与全不选
+
+```html
+...
+<script>
+    $(function(){
+      $('.all input').change(function(){
+        if($(this).prop('checked')){
+          // 当前全选复选框checked为true时执行，将选项的checked属性值设为true
+          $('.item input,.all input').prop('checked',true)
+          return
+        }
+        $('.item input,.all input').prop('checked',false)
+      })
+    })
+  </script>
+</head>
+<body>
+  <ul>
+    <li>
+      <label class="all">全选
+        <input type="checkbox" name="select" value='all'>
+      </label>
+    </li>
+    <li>
+      <label class="item">商品1
+        <input type="checkbox" name="select" value="shop1">
+      </label>
+    </li>
+    <li>
+      <label class="item"> 商品2
+        <input type="checkbox" name="select" value="shop2">
+      </label>
+    </li>
+    <li>
+      <label class="item">商品3
+        <input type="checkbox" name="select" value="shop3">
+      </label> 
+    </li>
+    <li>
+      <label class="all">
+      全选
+      <input type="checkbox" name="select" value='all'>
+    </label>
+    </li>
+  </ul>
+</body>
+...
+```
+
+此时全选按钮无问题，按常理，小复选框全选时，全选复选框应该选中。
+
+```js
+//利用筛选选择器 :checked
+element:checked//返回被选中的复选框
+```
+
+```js
+//监听小复选框
+$('.item input').change(function(){
+    //选中的小复选框个数=总的小复选框个数
+    if($('.item input:checked').length===$('.item input').length){
+        $('.all input').prop('checked',true)
+        return
+    }
+    $('.all input').prop('checked',false)
+})
+```
+
+
+
+### 3.5 jQuery内容文本值
+
+#### 3.5.1 获取并设置文本值
+
+**主要针对元素的内容还有表单的值操作**
+
+1. 普通元素内容`html()`
+
+   ```js
+   element.html() //获取元素内容,包含标签
+   element.html('content')//设置元素内容
+   ```
+
+   ```js
+   $(function(){
+       //获取元素内容
+       var content= $('div').html()
+       console.log(content)
+       //设置元素内容，将其设置为按钮
+       $('div').html('<input type="button" value="按钮">')
+   })
+   ```
+
+   
+
+2. 普通元素文本内容`text()`
+
+   ```js
+   //语法规范
+   element.text() //获取文本内容,不包含标签
+   element.text('content')//设置文本内容
+   ```
+
+   ```js
+   $(function(){
+       //获取文本内容
+       var content= $('div').text()
+       console.log(content)
+       //设置文本内容
+       $('div').text('<input type="button" value="按钮">')
+       //不会解析html代码，只会显示字符串内的内容
+   })
+   ```
+
+   
+
+3. 表单的值
+
+   ```js
+   //语法规范
+   ele.val()//获取表单值
+   ele.val('content')//设置表单值
+   ```
+
+   ```js
+   $(function(){
+       var value = $('input').val()
+       console.log(value)
+       $('input').val('请输入一些内容')
+   })
+   ```
+
+#### 3.5.2 增减案例
+
+```html
+...
+<script>
+    $(function(){
+      var index = 1//初始化 index
+      // +时index自增
+      $('button').eq(0).click(function(){
+        $('button').eq(1).text(++index)
+      })
+      // - index自减
+      $('button').eq(2).click(function(){
+        if(index===0){
+          //为0时不做任何操作
+          return
+        }
+        $('button').eq(1).text(--index)
+      })
+    })
+  </script>
+</head>
+<body>
+ <button>+</button>
+ <button> 1 </button>
+ <button>-</button>
+</body>
+...
+```
+
+#### 3.5.3修改商品小计
+
+```html
+... 
+<style>
+    table{
+      width: 50%;
+      margin: 20px auto 0 auto;
+      /* white-space: nowrap; */
+      border-collapse: collapse;
+    }
+    tbody tr{
+      text-align: center;
+    }
+    tbody tr td,th{
+       border: 1px solid black;
+    }
+    input{
+      max-width: 30px;
+    }
+  </style>
+  <script src="./jquery.js"></script>
+  <script>
+    $(function(){
+      var index = 1//初始化 index
+      var total = $('.price').text().substr(1)//获取单价
+      // +时index自增
+      $('button').eq(0).click(function(){
+        $('input').val(++index)
+        $('.total').text(`￥${(total*index).toFixed(2)}`)
+      })
+      // - index自减
+      $('button').eq(1).click(function(){
+        if(index===0){
+          //为0时不做任何操作
+          return
+        }
+        $('input').val(--index)
+        $('.total').text(`￥${(total*index).toFixed(2)}`)
+        // toFixed(num) 保留num位小数
+      })
+      //用户修改input值
+      $('input').change(function(){
+        var value = $(this).val()
+        $('.total').text(`￥${(total*value).toFixed(2)}`)
+      })
+    })
+  </script>
+</head>
+<body>
+  <table>
+    <tbody>
+      <tr>
+        <th>商品</th>
+        <th>单价</th>
+        <th>操作</th>
+        <th>小计</th>
+      </tr>
+      <tr>
+        <td>耐克</td>
+        <td class="price">￥21.00</td>
+        <td>
+
+          <button>+</button>
+          <input type="text" value="1">
+          <button>-</button>
+        </td>
+        <td class="total">￥21.00</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+...
+```
+
+### 3.6 jQuery元素操作
+
+> 主要是遍历、创建、添加、删除元素操作。
+
+#### 3.6.1 遍历元素
+
+`jQuery`隐式迭代是对同一元素做同样的操作，如果想给同一元素做不同的操作，就需要用到遍历。
+
+语法1:
+
+```js
+$('element').each(function(index,domElement){xxxx;})
+```
+
+1. `each()`方法遍历匹配的每一个元素，主要是DOM处理。
+2. 里面的回调函数有两个参数：index是每个元素的索引号；domElement是每个DOM元素对象，不是`jquery`对象
+3. 所以要使用`jquery`方法，需要给这个`dom`元素转换为`jquery`对象：`$("domElement")`。
+
+```js
+//给三个div设置不同的颜色
+...
+<script>
+    $(function(){
+      var arr = ['red','pink','#ccc']
+      var sum = 0
+      $('div').each(function(index,domElement){
+        //设置不同的背景颜色
+        $(domElement).css('backgroundColor',arr[index])
+        sum +=parseInt($(domElement).text())//字符串转换为整数
+      })
+      console.log(sum)
+      //打印div中数值之和
+    })
+  </script>
+</head>
+<body>
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>
+</body>
+...
+```
+
+
+
 
 
